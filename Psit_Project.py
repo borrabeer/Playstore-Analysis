@@ -1,8 +1,9 @@
 """ Psit Project """
 import pandas as pd
 def main():
+    """ main function for input data """
     data = pd.read_csv("googleplaystore.csv", encoding="ISO-8859-1")
-    name_data = data["App"]
+    name_data = data["App"]         # ดึงข้อมูลมาใหเหมดแล้วที่จะใช้
     rating_data = data["Rating"]
     review_data = data["Reviews"]
     size_data = data["Size"]
@@ -10,12 +11,16 @@ def main():
     type_data = data["Type"]
     price_data = data["Price"]
     genres_data = data["Genres"]
-    install_data = [i.replace("+", "").replace(",", "") for i in install_data]
-    install_data = list(map(int, install_data))
-    review_data = list(map(int, review_data))
-    price_data = list(map(int, price_data))
-    print(install_data)
-    print(min(install_data))
-    #print(data)
+    install_data = [i.replace("+", "").replace(",", "") for i in install_data]  #ทำให้ install_data เป็มเลขกลมๆ
+    price_data = [i.replace("$", "") for i in price_data]  #ทำเช่นเดียวกับ install_data
+    min_install, max_install = install(install_data) #นำ install_data เข้า function install จะหายอด install สูงสุดและต่ำสุด
+    print(min_install, max_install)
+    #ช่วยหาindexของ max, min install ให้หน่อย
+def install(install_data):
+    """" this function for max and min install """
+    #นับจำนวนของ max, min install
+    count_min_install = install_data.count(min(install_data)) 
+    count_max_install = install_data.count(max(install_data))
+    return count_min_install, count_max_install
 main()
 
