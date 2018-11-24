@@ -48,8 +48,8 @@ def name_rating(name_data, rating_data):
     return data_dict
 def find_name(number, name_data):
     """ find name in name_data """
-    lst_name = list()
+    set_name = set()
     for i in number:
-        lst_name.append(name_data[int(i)])
-    return lst_name
+        set_name.add(name_data[int(i)])
+    return set_name
 main()
