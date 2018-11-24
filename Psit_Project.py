@@ -16,8 +16,13 @@ def main():
     price_data = [i.replace("$", "") for i in price_data]  #ทำเช่นเดียวกับ install_data
     #print(data)
     number_min, number_max = install(install_data) #หา index ของค่า max, min
+    #หาชื่อของ app
+    min_name_data = find_name(number_min, name_data)
+    max_name_data = find_name(number_max, name_data)
     print(number_min)
     print(number_max)
+    print(min_name_data)
+    print(max_name_data)
     #print(name_rating_data_dict)
 def install(install_data):
     """" this function for max and min install """
@@ -39,4 +44,9 @@ def name_rating(name_data, rating_data):
         data_dict.update({name_data[index]:i})
         index += 1
     return data_dict
+def find_name(number, name_data):
+    lst_name = list()
+    for i in number:
+        lst_name.append(name_data[int(i)])
+    return lst_name
 main()
