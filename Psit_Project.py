@@ -19,6 +19,7 @@ def main():
     #หาชื่อของ app
     min_name_data = find_name(number_min, name_data)
     max_name_data = find_name(number_max, name_data)
+    print(max(install_data))
     print(number_min)
     print(number_max)
     print(min_name_data)
