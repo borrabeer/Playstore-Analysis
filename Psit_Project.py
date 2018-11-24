@@ -1,5 +1,6 @@
 """ Psit Project """
 import pandas as pd
+import pygal as pg
 def main():
     """ main function for input data """
     data = pd.read_csv("googleplaystore.csv", encoding="ISO-8859-1")
@@ -18,6 +19,10 @@ def main():
     min_install, max_install = install(install_data) #นำ install_data เข้า function install จะหายอด install สูงสุดและต่ำสุด
     print(min_install, max_install)
     print(name_rating_data_dict)
+    print(max(install_data))
+    rating_chart = pg.Bar()
+    rating_chart.add("Rating", rating_data)
+    rating_chart.render_to_file("rating_chart.svg")
     #ช่วยหาindexของ max, min install ให้หน่อย
 def install(install_data):
     """" this function for max and min install """
