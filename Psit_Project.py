@@ -13,6 +13,7 @@ def main():
     price_data = data["Price"]
     genres_data = data["Genres"]
     install_data = [i.replace("+", "").replace(",", "") for i in install_data]  #ทำให้ install_data เป็มเลขกลมๆ
+    install_data = [int(i) for i in install_data]
     price_data = [i.replace("$", "") for i in price_data]  #ทำเช่นเดียวกับ install_data
     #print(data)
     number_min, number_max = install(install_data) #หา index ของค่า max, min
