@@ -1,6 +1,5 @@
 """ Psit Project """
 import pandas as pd
-import pygal as pg
 def main():
     """ main function for input data """
     data = pd.read_csv("googleplaystore.csv", encoding="ISO-8859-1")
@@ -16,20 +15,21 @@ def main():
     install_data = [i.replace("+", "").replace(",", "") for i in install_data]  #ทำให้ install_data เป็มเลขกลมๆ
     price_data = [i.replace("$", "") for i in price_data]  #ทำเช่นเดียวกับ install_data
     #print(data)
-    min_install, max_install = install(install_data) #นำ install_data เข้า function install จะหายอด install สูงสุดและต่ำสุด
-    print(min_install, max_install)
-    print(name_rating_data_dict)
-    print(max(install_data))
-    rating_chart = pg.Bar()
-    rating_chart.add("Rating", rating_data)
-    rating_chart.render_to_file("rating_chart.svg")
-    #ช่วยหาindexของ max, min install ให้หน่อย
+    number_min, number_max = install(install_data) #หา index ของค่า max, min
+    print(number_min)
+    print(number_max)
+    #print(name_rating_data_dict)
 def install(install_data):
     """" this function for max and min install """
     #นับจำนวนของ max, min install
-    count_min_install = install_data.count(min(install_data))
-    count_max_install = install_data.count(max(install_data))
-    return count_min_install, count_max_install
+    number_min = list()
+    number_max = list()
+    for i in range(len(install_data)):
+        if install_data[i] == min(install_data):
+            number_min.append(i)
+        if install_data[i] == max(install_data):
+            number_max.append(i)
+    return number_min, number_max
 def name_rating(name_data, rating_data):
     """  get dict by {name_data:rating_data} """
     #เอา name-data กับ rating-data มาทำ dict
