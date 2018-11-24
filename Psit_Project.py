@@ -26,7 +26,8 @@ def install(install_data):
     count_max_install = install_data.count(max(install_data))
     return count_min_install, count_max_install
 def name_rating(name_data, rating_data):
-    """ เอา rating มาทำเป็น dic """
+    """  get dict by {name_data:rating_data} """
+    #เอา name-data กับ rating-data มาทำ dict
     data_dict = dict()
     index = 0
     for i in rating_data:
