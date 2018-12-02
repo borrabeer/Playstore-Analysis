@@ -1,12 +1,15 @@
 """ Psit Project """
 import pandas as pd
 import pygal as pg
+from pygal.style import Style
 def main():
     """ main function for input data """
     data = pd.read_csv("googleplaystore.csv", encoding="ISO-8859-1")
-    name_data = data["App"]         # ดึงข้อมูลมาใหเหมดแล้วที่จะใช้
+    name_data = data["App"]         # ดึงข้อมูลมาให้หมดแล้วที่จะใช้
     rating_data = data["Rating"]
+    category_data = data["Category"]
     name_rating_data_dict = name_rating(name_data, rating_data)
+    category_rating_data = category_rating(category_data, rating_data)
     review_data = data["Reviews"]
     size_data = data["Size"]
     install_data = data["Installs"]
@@ -21,19 +24,29 @@ def main():
     #หาชื่อของ app
     min_name_data = find_name(number_min, name_data)
     max_name_data = find_name(number_max, name_data)
-    print(max(install_data))
-    print(number_min)
-    print(number_max)
-    print(min_name_data)
-    print(max_name_data)
+    # print(max(install_data))
+    # print(number_min)
+    # print(number_max)
+    # print(min_name_data)
+    # print(max_name_data)
     count_rating_data = count_rating(rating_data)
-    rating_chart = pg.Bar()
+    custom_style = Style(
+    background='transparent',
+    plot_background='transparent',
+    opacity='.6',
+    opacity_hover='.9',
+    transition='400ms ease-in',
+    colors=('#F102A1',))
+    rating_chart = pg.Bar(fill=True, style=custom_style)
     rating_chart.title = "Rating in Google Playstore"
     rating_chart.x_labels = count_rating_data.keys()
     rating_chart.add("Rating", count_rating_data.values())
     rating_chart.render_to_file("rating_chart.svg")
-    print(count_rating_data)
-    #print(name_rating_data_dict)
+    category_rating_chart = pg.HorizontalBar()
+    category_rating_chart.title = "Average Rating of Categories"
+    category_rating_chart.x_labels = category_rating_data.keys()
+    category_rating_chart.add("Average Ratings", category_rating_data.values())
+    category_rating_chart.render_to_file("category_rating_chart.svg")
 def install(install_data):
     """" this function for max and min install """
     #นับจำนวนของ max, min install
@@ -86,4 +99,22 @@ def count_rating(rating_data):
         else:
             count_rating[0] += 1
     return count_rating
+def category_rating(category, rating):
+    """นำ rating ของ category มาหาค่าเฉลี่ย"""
+    category_rating_data = {}
+    category_rating_len = {}
+    index = 0
+    index_2 = 0
+    for i in rating:
+        if category[index] not in category_rating_data:
+            category_rating_data[category[index]] = i
+            category_rating_len[category[index]] = 1
+        else:
+            category_rating_len[category[index]] += 1
+            category_rating_data[category[index]] += i
+            index += 1
+    for i in category_rating_len:
+        category_rating_data[i] /= category_rating_len[i]
+        index_2 += 1
+    return category_rating_data
 main()
