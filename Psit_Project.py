@@ -28,9 +28,7 @@ def main():
             size_data[i] = int(float(size_data[i]))
             size_data[i] /= 1024
     size_data = [float(i) for i in size_data]
-    install_data = [i.replace("+", "").replace(",", "") for i in install_data]  #ทำให้ data ของยอดดาวน์โหลดเป็นตัวเลขทั้งหมด
-    install_data = [int(i) for i in install_data]
-    price_data = [i.replace("$", "") for i in price_data]
+    install_data = [i.replace("+", "") for i in install_data]  #ทำให้ data ของยอดดาวน์โหลดเป็นตัวเลขทั้งหมด
     """
 
     Using function and returning data in to variables
@@ -42,7 +40,7 @@ def main():
     category_size_data = category_size(category_data, size_data)
     """
     
-    Making Average reviews of each Categories chart
+    Making an Average reviews of each Categories chart
 
     """
     category_review_chart = pg.Bar()
@@ -52,7 +50,7 @@ def main():
     category_review_chart.render_to_file("category_review_chart.svg")
     """
 
-    Making Average ratings of each Categories chart
+    Making an Average ratings of each Categories chart
 
     """
     category_rating_chart = pg.HorizontalBar()
@@ -62,7 +60,7 @@ def main():
     category_rating_chart.render_to_file("category_rating_chart.svg")
     """
 
-    Making a Average sizes of each Categories chart
+    Making an Average sizes of each Categories chart
 
     """
     category_size_chart = pg.Bar(style=DarkSolarizedStyle)
@@ -70,7 +68,16 @@ def main():
     for i in category_size_data.keys():
         category_size_chart.add(i, category_size_data[i])
     category_size_chart.render_to_file("category_size_chart.svg")
+    """
 
+    Making a Most install application chart
+    
+    """
+    name_install_chart = pg.Bar(fill=True)
+    name_install_chart.title = "The Most Installs Applications on Google Playstore"
+    for i in name_install_data:
+        name_install_chart.add(i, name_install_data[i])
+    name_install_chart.render_to_file("name_install_chart.svg", key=len)
 def category_rating(category, rating):
     """นำ rating ของ category มาหาค่าเฉลี่ย"""
     category_rating_data = {}
@@ -130,7 +137,7 @@ def name_install(name, install):
     name_install_data = {}
     index = 0
     for i in install:
-        if i >= 500000000:
+        if len(i) > 11:
             name_install_data[name[index]] = i
         index += 1
     return name_install_data
