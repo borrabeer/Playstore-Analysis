@@ -48,7 +48,7 @@ def main():
     category_rating_chart.add("Average Ratings", category_rating_data.values())
     category_rating_chart.render_to_file("category_rating_chart.svg")
 def install(install_data):
-    """" this function for max and min install """
+    """" ฟังชั่นนี้ หายอดติดตั้งที่มากที่สุดและน้อยที่สุดใน google playstore """
     #นับจำนวนของ max, min install
     number_min = list()
     number_max = list()
@@ -59,7 +59,7 @@ def install(install_data):
             number_max.append(i)
     return number_min, number_max
 def name_rating(name_data, rating_data):
-    """  get dict by {name_data:rating_data} """
+    """  หา rating ของแต่ละแอพ แล้วมาทำ dict เพื่อให้ง่ายต่อการคนหา  """
     #เอา name-data กับ rating-data มาทำ dict
     data_dict = dict()
     index = 0
@@ -68,13 +68,13 @@ def name_rating(name_data, rating_data):
         index += 1
     return data_dict
 def find_name(number, name_data):
-    """ find name in name_data """
+    """ รวมแอพที่มีชื่อซ้ำ แต่คนละหมวดหมู่ ให้เป็นชื่อเดียว """
     set_name = set()
     for i in number:
         set_name.add(name_data[int(i)])
     return set_name
 def count_rating(rating_data):
-    """count rating in to set of int"""
+    """ นับค่า rating ของแต่ละแอฟ ออกมาเป็นช่วงตัวเลข """
     #นับค่า Rating ของแต่ละ แอพพลิเคชั่นออกมาเป็นช่วงของตัวเลข
     count_rating = { 5 : 0, 4.5 : 0, 4 : 0, 3.5 : 0, 3 : 0, 2.5 : 0, 2 : 0, 1.5 : 0, 1 : 0, 0 : 0}
     for i in rating_data:
