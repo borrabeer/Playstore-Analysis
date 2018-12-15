@@ -31,6 +31,7 @@ def main():
     price_data = data["Price"]
     genres_data = data["Genres"]
     price_data = [i.replace("$", "") for i in price_data]  #ทำเช่นเดียวกับ install_data
+    category_review(category_data, review_data)
     # category_review_data = category_review(category_data, review_data)
     # number_min, number_max = install(install_data) #หา index ของค่า max, min
     # #หาชื่อของ app
@@ -158,6 +159,22 @@ def name_install(name, install):
             name_install_data[name[index]] = i
         index += 1
     return name_install_data
-
-
+def category_review(category, review):
+    """ นำ review และ category มาทำ dict """
+    data_dict = dict()
+    data_lst = list()
+    for i in range(len(category)):
+            data_lst.append([category[i], review[i]])
+    for i in data_lst:
+        if i[0] not in data_dict:
+            data_dict.update({i[0]:[i[1]]})
+        else:
+            lst1 = data_dict[i[0]]
+            lst1.append(i[1])
+            data_dict.update({i[0]:lst1})
+    for i in data_dict:
+        lst1 = data_dict[i]
+        ava = sum(lst1)/len(lst1)
+        data_dict.update({i:ava})
+    print(data_dict)
 main()
