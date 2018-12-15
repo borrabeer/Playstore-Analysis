@@ -1,7 +1,7 @@
 """ Psit Project """
 import pandas as pd
 import pygal as pg
-from pygal.style import Style
+from pygal.style import Style, DarkSolarizedStyle
 def main():
     """ main function for input data """
     data = pd.read_csv("googleplaystore.csv", encoding="ISO-8859-1")
@@ -21,46 +21,30 @@ def main():
             size_data[i] = size_data[i].replace('k', "")
             size_data[i] = int(float(size_data[i]))
             size_data[i] /= 1024
-    
     size_data = [float(i) for i in size_data]
     category_size_data = category_size(category_data, size_data)
     install_data = data["Installs"]
+    install_data = [i.replace("+", "").replace(",", "") for i in install_data]  #ทำให้ install_data เป็มเลขกลมๆ
+    install_data = [int(i) for i in install_data]
+    name_install_data = name_install(name_data, install_data)
     type_data = data["Type"]
     price_data = data["Price"]
     genres_data = data["Genres"]
-    install_data = [i.replace("+", "").replace(",", "") for i in install_data]  #ทำให้ install_data เป็มเลขกลมๆ
-    install_data = [int(i) for i in install_data]
     price_data = [i.replace("$", "") for i in price_data]  #ทำเช่นเดียวกับ install_data
-    # #print(data)
+    # category_review_data = category_review(category_data, review_data)
     # number_min, number_max = install(install_data) #หา index ของค่า max, min
     # #หาชื่อของ app
     # min_name_data = find_name(number_min, name_data)
     # max_name_data = find_name(number_max, name_data)
-    #custom_style = Style(
-    #background='transparent',
-    #plot_background='transparent',
-    #opacity='.6',
-    #opacity_hover='.9',
-    #transition='400ms ease-in',
-    #colors=('#D2691E',))
-    from pygal.style import DarkStyle
-    category_rating_chart = pg.Line(x_label_rotation = 45, style=DarkStyle)
-    category_rating_chart.title = "Average Rating of Categories"
-    category_rating_chart.x_labels = category_rating_data.keys()
-    category_rating_chart.add("Average Ratings", category_rating_data.values())
+    category_rating_chart = pg.HorizontalBar()
+    category_rating_chart.title = "Average Rating of each Categories"
+    for i in category_rating_data:
+        category_rating_chart.add(i, category_rating_data[i])
     category_rating_chart.render_to_file("category_rating_chart.svg")
-    #custom_style = Style(
-    #background='transparent',
-    #plot_background='transparent',
-    #opacity='.6',
-    #opacity_hover='.9',
-    #transition='400ms ease-in',
-    #colors=('#0aeb7e',))
-    from pygal.style import DarkStyle
-    category_size_chart = pg.Line(x_label_rotation = 45, style=DarkStyle)
-    category_size_chart.title = "Average Size of Application in each Category(MBs)"
-    category_size_chart.x_labels = category_size_data.keys()
-    category_size_chart.add("Avg. Size(MBs)", category_size_data.values())
+    category_size_chart = pg.Bar(style=DarkSolarizedStyle)
+    category_size_chart.title = "Average Size of Application of each Category(MBs)"
+    for i in category_size_data.keys():
+        category_size_chart.add(i, category_size_data[i])
     category_size_chart.render_to_file("category_size_chart.svg")
 def install(install_data):
     """" ฟังชั่นนี้ หายอดติดตั้งที่มากที่สุดและน้อยที่สุดใน google playstore """
@@ -74,7 +58,7 @@ def install(install_data):
             number_max.append(i)
     return number_min, number_max
 def name_rating(name_data, rating_data):
-    """  หา rating ของแต่ละแอพ แล้วมาทำ dict เพื่อให้ง่ายต่อการค้นหา  """
+    """  หา rating ของแต่ละแอพ แล้วมาทำ dict เพื่อให้ง่ายต่อการคนหา  """
     #เอา name-data กับ rating-data มาทำ dict
     data_dict = dict()
     index = 0
@@ -89,7 +73,7 @@ def find_name(number, name_data):
         set_name.add(name_data[int(i)])
     return set_name
 def count_rating(rating_data):
-    """ นับค่า rating ของแต่ละแอพ ออกมาเป็นช่วงตัวเลข """
+    """ นับค่า rating ของแต่ละแอฟ ออกมาเป็นช่วงตัวเลข """
     #นับค่า Rating ของแต่ละ แอพพลิเคชั่นออกมาเป็นช่วงของตัวเลข
     count_rating = { 5 : 0, 4.5 : 0, 4 : 0, 3.5 : 0, 3 : 0, 2.5 : 0, 2 : 0, 1.5 : 0, 1 : 0, 0 : 0}
     for i in rating_data:
@@ -127,11 +111,26 @@ def category_rating(category, rating):
         else:
             category_rating_len[category[index]] += 1
             category_rating_data[category[index]] += i
-        index += 1
+            index += 1
     for i in category_rating_len:
         category_rating_data[i] /= category_rating_len[i]
         index_2 += 1
     return category_rating_data
+def category_review(category, review):
+    """ นำ review และ category มาทำ dict """
+    data_dict = dict()
+    data_lst = list()
+    for i in category:
+        for j in review:
+            data_lst.append([i, j])
+    for i in data_lst:
+        if i[0] not in data_dict:
+            data_dict.update({i[0]:[i[1]]})
+        else:
+            lst1 = data_dict[i]
+            lst1.append(i[1])
+            data_dict.update({i:lst1})
+    return data_dict
 def category_size(category, size):
     """นำขนาดของแต่ละแอพพลิเคชั่นในแต่ละหมวดมาหาค่าเฉลี่ย"""
     category_size_data = {}
@@ -150,4 +149,15 @@ def category_size(category, size):
         category_size_data[i] /= category_size_len[i]
         index_2 += 1
     return category_size_data
+def name_install(name, install):
+    """นำยอดดาวน์โหลดของแต่ละแอพมาเชื่อมกันโดยแยกเป็นแต่ละหมวดหมู่"""
+    name_install_data = {}
+    index = 0
+    for i in install:
+        if i >= 500000000:
+            name_install_data[name[index]] = i
+        index += 1
+    return name_install_data
+
+
 main()
