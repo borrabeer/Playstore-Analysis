@@ -28,7 +28,8 @@ def main():
             size_data[i] = int(float(size_data[i]))
             size_data[i] /= 1024
     size_data = [float(i) for i in size_data]
-    install_data = [i.replace("+", "") for i in install_data]  #ทำให้ data ของยอดดาวน์โหลดเป็นตัวเลขทั้งหมด
+    install_data = [i.replace("+", "").replace(",", "") for i in install_data]  #ทำให้ data ของยอดดาวน์โหลดเป็นตัวเลขทั้งหมด
+    install_data = [int(i) for i in install_data]
     """
 
     Using function and returning data in to variables
@@ -77,7 +78,7 @@ def main():
     name_install_chart.title = "The Most Installs Applications on Google Playstore"
     for i in name_install_data:
         name_install_chart.add(i, name_install_data[i])
-    name_install_chart.render_to_file("name_install_chart.svg", key=len)
+    name_install_chart.render_to_file("name_install_chart.svg")
 def category_rating(category, rating):
     """นำ rating ของ category มาหาค่าเฉลี่ย"""
     category_rating_data = {}
@@ -137,7 +138,7 @@ def name_install(name, install):
     name_install_data = {}
     index = 0
     for i in install:
-        if len(i) > 11:
+        if i > 500000000:
             name_install_data[name[index]] = i
         index += 1
     return name_install_data
