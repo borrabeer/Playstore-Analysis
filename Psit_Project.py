@@ -1,7 +1,7 @@
 """ Playstore-Analysis Project """
 import pandas as pd
 import pygal as pg
-from pygal.style import Style, DarkSolarizedStyle
+from pygal.style import Style, CleanStyle, LightColorizedStyle, BlueStyle, RedBlueStyle
 def main():
     """ main function for data and making charts """
     """
@@ -44,7 +44,7 @@ def main():
     Making an Average reviews of each Categories chart
 
     """
-    category_review_chart = pg.Bar()
+    category_review_chart = pg.Bar(style=CleanStyle)
     category_review_chart.title = "Average Reviews of each Categories"
     for i in category_review_data:
         category_review_chart.add(i, category_review_data[i])
@@ -54,7 +54,7 @@ def main():
     Making an Average ratings of each Categories chart
 
     """
-    category_rating_chart = pg.HorizontalBar()
+    category_rating_chart = pg.HorizontalBar(style=LightColorizedStyle)
     category_rating_chart.title = "Average Ratings of each Categories"
     for i in category_rating_data:
         category_rating_chart.add(i, category_rating_data[i])
@@ -64,7 +64,7 @@ def main():
     Making an Average sizes of each Categories chart
 
     """
-    category_size_chart = pg.Bar(style=DarkSolarizedStyle)
+    category_size_chart = pg.Bar(style=BlueStyle)
     category_size_chart.title = "Average Sizes of Application of each Categories(MBs)"
     for i in category_size_data.keys():
         category_size_chart.add(i, category_size_data[i])
@@ -74,7 +74,7 @@ def main():
     Making a Most install application chart
     
     """
-    name_install_chart = pg.SolidGauge(inner_radius=0.7)
+    name_install_chart = pg.SolidGauge(inner_radius=0.7, style=RedBlueStyle)
     name_install_chart.title = "The Most Installs Applications on Google Playstore"
     for i in name_install_data:
         name_install_chart.add(i, [{"value": name_install_data[i], 'max_value': 1000}])
