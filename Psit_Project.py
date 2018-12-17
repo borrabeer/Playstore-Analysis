@@ -74,10 +74,13 @@ def main():
     Making a Most install application chart
     
     """
-    name_install_chart = pg.Bar(fill=True)
+    name_install_chart = pg.SolidGauge(inner_radius=0.7)
     name_install_chart.title = "The Most Installs Applications on Google Playstore"
     for i in name_install_data:
-        name_install_chart.add(i, name_install_data[i])
+        name_install_chart.add(i, [{"value": name_install_data[i], 'max_value': 1000}])
+    percent_formatter = lambda x: '100%'.format(x)
+    name_install_chart.legend_at_bottom = True
+    name_install_chart.value_formatter = percent_formatter
     name_install_chart.render_to_file("name_install_chart.svg")
 def category_rating(category, rating):
     """นำ rating ของ category มาหาค่าเฉลี่ย"""
