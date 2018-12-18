@@ -1,4 +1,7 @@
 # Playstore-Analysis
+
+<img src="docs/img/group_logo.png" width="256px" height="256px">
+
 ## PSIT 2018 Project about Google Playstore Analysis
 https://borrabeer.github.io/Playstore-Analysis/
 
